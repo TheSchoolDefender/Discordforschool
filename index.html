@@ -1,4 +1,5 @@
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Server-like Chat Interface</title>
+
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>School Discord</title>
 <style>
   body, html {
     margin: 0;
@@ -218,6 +219,8 @@
     </form>
   </div>
 
+  <input type="file" id="profile-photo-input" accept="image/*" style="display: none;">
+
   <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
   <script>
     const gun = Gun(['https://gun-manhattan.herokuapp.com/gun']);
@@ -352,10 +355,18 @@
     }
 
     profileAvatar.addEventListener('click', function() {
-      const newAvatar = prompt("Enter a new avatar URL:", avatar);
-      if (newAvatar !== null) {
-        avatar = newAvatar.trim();
-        updateProfile();
+      document.getElementById('profile-photo-input').click();
+    });
+
+    document.getElementById('profile-photo-input').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          avatar = e.target.result;
+          updateProfile();
+        };
+        reader.readAsDataURL(file);
       }
     });
 
